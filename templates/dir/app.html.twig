@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}App Html{% endblock %}</title>
+    <style>
+        body{
+            background:#eee;
+            padding:50px;
+            color:#555;
+            font-family: Tahoma, Verdana, sans-serif;
+        }
+        h1 {
+            text-align:center;
+            padding:50px
+        }
+        .welcome {
+            margin:auto;
+            margin-bottom:50px;
+            padding:35px;
+            text-align:center;
+            border:solid 1px silver;
+            border-radius: 25px 0 25px 0;
+            box-shadow: 0 0 15px green;
+            max-width:700px;
+        }
+        .txt-block {
+            margin:auto;
+            margin-bottom:50px;
+            padding:35px;
+            text-align:center;
+            border:solid 1px silver;
+            border-radius: 25px 0 25px 0;
+            box-shadow: 0 0 15px pink;
+            max-width:700px;
+        }
+        .txt-block p {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>{% block head %}App Html{% endblock %}</h1>
+
+    <div class="txt-block">
+
+        {% block body %} ... {% endblock %}
+
+    </div>
+
+</body>
+
+</html>
+
