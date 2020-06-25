@@ -10,7 +10,26 @@ use Symfony\Component\HttpFoundation\Response;
 class SampleController extends AbstractController
 {
     /**
-     * @Route("/", methods={"GET"}, name="main_page")
+     * @Route("/api/{id}/count/{sign}", methods={"post"}, name="json_api")
+     */
+    public function jsonApi($id, $sign) {
+
+        // todo use id to query database
+
+        if($sign == 'plus')
+            $voteCount = rand(5, 10);
+        else
+            $voteCount = rand(1, 5);
+
+        return $this->json(
+            [
+                'votes' => $voteCount
+            ]
+        );
+    }
+
+    /**
+     * @Route("/votes", methods={"GET"}, name="main_page")
      */
     public function content() {
 
@@ -19,7 +38,7 @@ class SampleController extends AbstractController
         dump($array);
 
         return $this->render(
-            'content/content.html.twig',
+            'api/votes.html.twig',
             [
                 'message' => 'Hello',
                 'array' => $array
@@ -28,11 +47,11 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/home", methods={"GET"})
+     * @Route("/", methods={"GET"})
      */
     public function home() {
         return $this->render(
-            'dir/example.html.twig',
+            'main/example.html.twig',
             [
                 'message' => 'Hello',
                 'array' => [

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}App Html{% endblock %}</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/bs/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+    {% endblock %}
+</head>
+<body class="body">
+
+    <h1 class="h1">{% block head %}App Html{% endblock %}</h1>
+
+    <div class="txt-block">
+
+        {% block body %} ... {% endblock %}
+
+    </div>
+
+    {% block javascripts %}
+    <script src="{{ asset('js/jq.js') }}"></script>
+    {% endblock %}
+</body>
+
+</html>
+

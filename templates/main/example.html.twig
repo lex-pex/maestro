@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+    {% endblock %}
+</head>
+<body>
+
+    <h1>Response</h1>
+
+    <div class="txt-block">
+
+        <p>{{ array[2] | upper | length }}</p>
+
+        {% if message is defined %}
+            <p>{{ message }}</p>
+        {% endif %}
+
+    </div>
+
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

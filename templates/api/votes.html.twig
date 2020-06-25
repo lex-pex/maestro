@@ -1,0 +1,26 @@
+{% extends 'main/app.html.twig' %}
+{% block body %}
+    <p>
+        When people are doing a physical task, it's easy
+        to assess how hard they are working. You can see
+        the physical movement, the sweat. You also see
+        the results of their work: the brick wall rising,
+        the hole in the ground is getting bigger.
+    </p>
+    <p class="votes-block">
+        <span class="btn btn-secondary disabled"> Rating: <span class="votes-total"> 0 </span></span>
+        <a href="#" class="btn btn-sm btn-primary rating-link" data-direction="plus">+</a>
+        <a href="#" class="btn btn-sm btn-danger rating-link" data-direction="minus">&nbsp;-&nbsp;</a>
+    </p>
+{% endblock %}
+
+{# Here is the hoisted Title of the page #}
+{% block title %}Json Api{% endblock %}
+
+{# Here is the hoisted Head of the page #}
+{% block head %}Json Api{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/rating_api.js') }}"></script>
+{% endblock %}
