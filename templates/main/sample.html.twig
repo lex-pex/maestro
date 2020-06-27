@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Example</title>
+    <meta charset="utf-8">
+    <title>Symfony Sample</title>
 {% block stylesheets %}
     {#{{ encore_entry_link_tags('app') }}#}
-    <link rel="stylesheet" href="{{ asset('css/bs/bootstrap.min.css') }}
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
 {% endblock %}
 </head>
-<body>
+<body class="body">
 
-    <h1 class="h1">Response</h1>
+    <h1 class="h1 italic">Symfony</h1>
+
+    <div class="welcome">
+        <p>Welcome</p>
+    </div>
 
     <div class="txt-block">
 
+        <p><strong>Here is the filters samples going:</strong></p>
+
         <p>{{ array[2] | upper | length }}</p>
 
+        <p><strong>Here is the 'message', if message is defined:</strong></p>
     {% if message is defined %}
-    <p>{{ message }}</p>
+    <p><em>{{ message }}</em></p>
     {% endif %}
 
     </div>

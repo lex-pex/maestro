@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Symfony Sample</title>
+{% block stylesheets %}
+    {#{{ encore_entry_link_tags('app') }}#}
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+{% endblock %}
+</head>
+<body class="body">
+
+    <h1 class="h1 italic">Symfony</h1>
+
+    <div class="welcome">
+        <p>App's Routes:</p>
+        <ul style="text-align: left">
+        {% for route in routes %}
+            <li><a href="{{ path(route, {id: 1, sign: 'plus'}) }}">{{ route }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div class="txt-block">
+
+        <p><strong>Here is the filters samples going:</strong></p>
+
+        <p>{{ array[2] | upper | length }}</p>
+
+        <p><strong>Here is the 'message', if message is defined:</strong></p>
+    {% if message is defined %}
+    <p><em>{{ message }}</em></p>
+    {% endif %}
+
+    </div>
+
+{% block javascripts %}
+    {#{{ encore_entry_script_tags('app') }}#}
+    <script src="{{ asset('build/app.js') }}"></script>
+{% endblock %}
+</body>
+</html>

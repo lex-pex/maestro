@@ -15,7 +15,7 @@ class SampleController extends AbstractController
 
     /**
      * Json Api Sample
-     * @Route("/api/{id<\d+>}/count/{sign<plus|minus>}", methods={"post"}, name="json_api")
+     * @Route("/api/{id<\d+>}/count/{sign<plus|minus>}", methods={"post"}, name="json_api_post")
      * @param $id
      * @param $sign
      * @param LoggerInterface $logger
@@ -42,7 +42,7 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/votes", methods={"GET"}, name="main_page")
+     * @Route("/json_api", methods={"GET"}, name="json_api_main")
      */
     public function votes() {
         $array = ['one', 'two', 'three'];
@@ -55,12 +55,40 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/", methods={"GET"})
+     * @Route("/", methods={"GET"}, name="main_page")
      */
     public function home() {
+        $message =
+            'Aggregation is a weak type of Association ' .
+            'with partial ownership. For an Aggregation ' .
+            'relationship, we use the term "uses" to ' .
+            'imply a weak "has-a" relationship.';
+        $router = $this->container->get('router');
+        /** @var $collection \Symfony\Component\Routing\RouteCollection */
+        $collection = $router->getRouteCollection();
+        $allRoutes = $collection->all();
+        dump($allRoutes);
+        $routes = array();
+        /** @var $params \Symfony\Component\Routing\Route */
+        foreach ($allRoutes as $route => $params)
+        {
+            $defaults = $params->getDefaults();
+            if (isset($defaults['_controller']))
+            {
+                $controllerAction = explode(':', $defaults['_controller']);
+                $controller = $controllerAction[0];
+                if (!isset($routes[$controller])) {
+                    $routes[$controller] = array();
+                }
+                $routes[$controller][]= $route;
+            }
+        }
+        $thisRoutes = isset($routes[get_class($this)]) ?
+            $routes[get_class($this)] : null ;
         return $this->render(
-            'main/example.html.twig', [
-                'message' => 'Hello',
+            'main/home.html.twig', [
+                'routes' => $thisRoutes,
+                'message' => $message,
                 'array' => ['one', 'two', 'three']
             ]
         );
@@ -73,9 +101,14 @@ class SampleController extends AbstractController
      * @return Response
      */
     public function twigService(Environment $twig) {
+        $message =
+            'Aggregation is a weak type of Association ' .
+            'with partial ownership. For an Aggregation ' .
+            'relationship, we use the term "uses" to ' .
+            'imply a weak "has-a" relationship.';
         $html = $twig->render(
-            'main/example.html.twig', [
-                'message' => 'Hello',
+            'main/sample.html.twig', [
+                'message' => $message,
                 'array' => ['one', 'two', 'three']
             ]
         );

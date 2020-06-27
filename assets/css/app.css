@@ -2,19 +2,18 @@
 @import '~bootstrap';
 
 .body{
-  background:#eee;
-  padding:50px;
+  background:#ddd;
   color:#555;
   font-family: Tahoma, Verdana, sans-serif;
 }
 .h1 {
   text-align:center;
-  padding:50px
+  padding:20px
 }
 .welcome {
-  margin:auto;
-  margin-bottom:50px;
-  padding:35px;
+  background: #eee;
+  margin:0 auto 50px auto;
+  padding:25px;
   text-align:center;
   border:solid 1px silver;
   border-radius: 25px 0 25px 0;
@@ -22,8 +21,9 @@
   max-width:700px;
 }
 .txt-block {
+  background: #eee;
   margin:0 auto 50px auto ;
-  padding:35px;
+  padding:25px;
   text-align:center;
   border:solid 1px silver;
   border-radius: 25px 0 25px 0;
@@ -32,6 +32,10 @@
 }
 .txt-block p {
   text-align: left;
+  font-family: Tahoma, Verdana, sans-serif;
+}
+.italic{
+  font-style: italic
 }
 .rating-link {
   font-size: 1.2em;
