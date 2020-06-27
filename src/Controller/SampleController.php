@@ -2,24 +2,37 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 
 class SampleController extends AbstractController
 {
+
     /**
-     * @Route("/api/{id}/count/{sign}", methods={"post"}, name="json_api")
+     * Json Api Sample
+     * @Route("/api/{id<\d+>}/count/{sign<plus|minus>}", methods={"post"}, name="json_api")
+     * @param $id
+     * @param $sign
+     * @param LoggerInterface $logger
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function jsonApi($id, $sign) {
+    public function jsonApi($id, $sign, LoggerInterface $logger) {
 
         // todo use id to query database
 
-        if($sign == 'plus')
+        if($sign == 'plus') {
+            $logger->info('PLUS CLICKED');
             $voteCount = rand(5, 10);
-        else
+        }
+        else {
+            $logger->info('MINUS CLICKED');
             $voteCount = rand(1, 5);
+        }
 
         return $this->json(
             [
@@ -31,15 +44,10 @@ class SampleController extends AbstractController
     /**
      * @Route("/votes", methods={"GET"}, name="main_page")
      */
-    public function content() {
-
+    public function votes() {
         $array = ['one', 'two', 'three'];
-
-        dump($array);
-
-        return $this->render(
-            'api/votes.html.twig',
-            [
+        dump($array); // goes to the Profiler
+        return $this->render('api/votes.html.twig', [
                 'message' => 'Hello',
                 'array' => $array
             ]
@@ -51,14 +59,27 @@ class SampleController extends AbstractController
      */
     public function home() {
         return $this->render(
-            'main/example.html.twig',
-            [
+            'main/example.html.twig', [
                 'message' => 'Hello',
-                'array' => [
-                    'one', 'two', 'three'
-                ]
+                'array' => ['one', 'two', 'three']
             ]
         );
+    }
+
+    /**
+     * Service usage sample
+     * @Route("/twig", methods={"GET"})
+     * @param Environment $twig
+     * @return Response
+     */
+    public function twigService(Environment $twig) {
+        $html = $twig->render(
+            'main/example.html.twig', [
+                'message' => 'Hello',
+                'array' => ['one', 'two', 'three']
+            ]
+        );
+        return new Response($html);
     }
 
     /**

@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Example</title>
-    {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-    {% endblock %}
+{% block stylesheets %}
+    {#{{ encore_entry_link_tags('app') }}#}
+    <link rel="stylesheet" href="{{ asset('css/bs/bootstrap.min.css') }}
+{% endblock %}
 </head>
 <body>
 
-    <h1>Response</h1>
+    <h1 class="h1">Response</h1>
 
     <div class="txt-block">
 
         <p>{{ array[2] | upper | length }}</p>
 
-        {% if message is defined %}
-            <p>{{ message }}</p>
-        {% endif %}
+    {% if message is defined %}
+    <p>{{ message }}</p>
+    {% endif %}
 
     </div>
 
-    {% block javascripts %}{% endblock %}
+{% block javascripts %}
+    {#{{ encore_entry_script_tags('app') }}#}
+    <script src="{{ asset('build/app.js') }}"></script>
+{% endblock %}
 </body>
 </html>
