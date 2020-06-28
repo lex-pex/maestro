@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Sample;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,10 +12,9 @@ use Twig\Environment;
 
 class SampleController extends AbstractController
 {
-
     /**
      * Json Api Sample
-     * @Route("/api/{id<\d+>}/count/{sign<plus|minus>}", methods={"post"}, name="json_api_post")
+     * @Route("/sample/api/{id<\d+>}/count/{sign<plus|minus>}", methods={"post"}, name="json_api_post")
      * @param $id
      * @param $sign
      * @param LoggerInterface $logger
@@ -42,7 +41,7 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/json_api", methods={"GET"}, name="json_api_main")
+     * @Route("/sample/json_api", methods={"GET"}, name="json_api_main")
      */
     public function votes() {
         $array = ['one', 'two', 'three'];
@@ -55,7 +54,7 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/", methods={"GET"}, name="main_page")
+     * @Route("/sample", methods={"GET"}, name="main_page")
      */
     public function home() {
         $message =
@@ -96,7 +95,7 @@ class SampleController extends AbstractController
 
     /**
      * Service usage sample
-     * @Route("/twig", methods={"GET"})
+     * @Route("/sample/twig", methods={"GET"})
      * @param Environment $twig
      * @return Response
      */
@@ -116,7 +115,7 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/page", methods={"GET"})
+     * @Route("/sample/page", methods={"GET"})
      */
     public function homepage() {
         $style = '<style>body{background: silver}</style>';
@@ -125,7 +124,7 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/greeting/{name?}", methods={"GET"})
+     * @Route("/sample/greeting/{name?}", methods={"GET"})
      * @param $name
      * @return Response
      */

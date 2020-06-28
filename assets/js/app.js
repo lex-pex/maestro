@@ -23,8 +23,8 @@ block.find('a').on('click', function(e) {
     e.preventDefault();
     let link = $(e.currentTarget);
     $.ajax({
-        url: '/api/12/count/' + link.data('direction'),
-        method: 'post'
+        url: 'sample/api/12/count/' + link.data('sign'),
+        method: 'POST'
     }).then(function (data) {
         block.find('.votes-total').text(data.votes);
     }).catch(function (e) {
