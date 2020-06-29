@@ -14,7 +14,7 @@ class SampleController extends AbstractController
 {
     /**
      * Json Api Sample
-     * @Route("/sample/api/{id<\d+>}/count/{sign<plus|minus>}", methods={"post"}, name="json_api_post")
+     * @Route("abort/sample/api/{id<\d+>}/count/{sign<plus|minus>}", methods={"post"}, name="json_api_post")
      * @param $id
      * @param $sign
      * @param LoggerInterface $logger
@@ -41,12 +41,12 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/sample/json_api", methods={"GET"}, name="json_api_main")
+     * @Route("abort/sample/json_api", methods={"GET"}, name="json_api_main")
      */
     public function votes() {
         $array = ['one', 'two', 'three'];
         dump($array); // goes to the Profiler
-        return $this->render('api/votes.html.twig', [
+        return $this->render('abort/api/votes.html.twig', [
                 'message' => 'Hello',
                 'array' => $array
             ]
@@ -54,7 +54,7 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/sample", methods={"GET"}, name="main_page")
+     * @Route("abort/sample", methods={"GET"}, name="main_page")
      */
     public function home() {
         $message =
@@ -85,7 +85,7 @@ class SampleController extends AbstractController
         $thisRoutes = isset($routes[get_class($this)]) ?
             $routes[get_class($this)] : null ;
         return $this->render(
-            'main/home.html.twig', [
+            'abort/main/home.html.twig', [
                 'routes' => $thisRoutes,
                 'message' => $message,
                 'array' => ['one', 'two', 'three']
@@ -95,7 +95,7 @@ class SampleController extends AbstractController
 
     /**
      * Service usage sample
-     * @Route("/sample/twig", methods={"GET"})
+     * @Route("abort/sample/twig", methods={"GET"})
      * @param Environment $twig
      * @return Response
      */
@@ -106,7 +106,7 @@ class SampleController extends AbstractController
             'relationship, we use the term "uses" to ' .
             'imply a weak "has-a" relationship.';
         $html = $twig->render(
-            'main/sample.html.twig', [
+            'abort/main/sample.html.twig', [
                 'message' => $message,
                 'array' => ['one', 'two', 'three']
             ]
@@ -115,7 +115,7 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/sample/page", methods={"GET"})
+     * @Route("abort/sample/page", methods={"GET"})
      */
     public function homepage() {
         $style = '<style>body{background: silver}</style>';
@@ -124,7 +124,7 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @Route("/sample/greeting/{name?}", methods={"GET"})
+     * @Route("abort/sample/greeting/{name?}", methods={"GET"})
      * @param $name
      * @return Response
      */
