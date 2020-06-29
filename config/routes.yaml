@@ -2,6 +2,6 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-#index:
-#    path: /
-#    controller: App\Controller\QuestionController::homepage
+index:
+    path: /
+    controller: App\Controller\GuestController::index

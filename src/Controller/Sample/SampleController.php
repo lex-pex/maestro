@@ -33,8 +33,7 @@ class SampleController extends AbstractController
             $voteCount = rand(1, 5);
         }
 
-        return $this->json(
-            [
+        return $this->json([
                 'votes' => $voteCount
             ]
         );

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ asset('/img/Maestro.png') }}">
+    <title>{% block titles %}Maestro{% endblock %}</title>
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="{{ asset('/') }}"><img src="{{ asset('img/Maestro.png') }}" width="25px"/> _ Maestro</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ml-auto pr-3">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="#">New Category</a>
+                    <a class="dropdown-item" href="#">Add New Item</a>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline">
+            <input class="form-control-sm mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<main role="main">
+    <div class="jumbotron">
+        <div class="container"></div>
+    </div>
+    {% block content %}{% endblock %}
+</main>
+<footer class="container">
+    <p>&copy; Acme Corporation <script>document.write(new Date().getFullYear())</script></p>
+</footer>
+{% block javascripts %}
+{{ encore_entry_script_tags('app') }}
+{% endblock %}
+</body>
+</html>
+
+

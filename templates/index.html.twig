@@ -1,0 +1,17 @@
+{% extends 'layouts/app.html.twig' %}
+{% block content %}
+<div class="container">
+    <div class="row no-gutters">
+        {% for i in items %}
+        <div class="col-md-4">
+            <div class="card m-2">
+                <div class="card-header"><h4>{{ i.title }}</h4></div>
+                <div class="card-body"><p>{{ i.text }}</p></div>
+                <div class="card-footer"><a class="btn btn-sm btn-secondary" href="#" role="button">View &raquo;</a></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <hr>
+</div>
+{% endblock %}
