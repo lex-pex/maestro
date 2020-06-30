@@ -1,0 +1,26 @@
+{% extends 'layouts/app.html.twig' %}
+{% block main %}
+<main role="main">
+    <div class="container-fluid">
+        <div class="row p-0">
+            <div class="col-md-2 col-sm-12">
+                <ul class="nav nav-pills btn-group-vertical">
+                    {% for category in categories %}
+                    <li class="nav-item btn-block">
+                        <a class="nav-item nav-link {{ category.id == category_id ? 'active' : 'border' }}" href="{{ path('category', {alias: category.alias}) }}">{{ category.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-10 col-sm-12 pl-0 pr-3">
+                <div class="jumbotron">
+                    <div class="container"></div>
+                </div>
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+

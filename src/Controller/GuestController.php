@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Assist\Redirect;
 use App\Entity\Categories;
 use App\Entity\Items;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,7 +47,7 @@ class GuestController extends AbstractController
         $resultSet = $repository->findBy(['alias' => $alias]);
 
         if(count($resultSet) < 1) {
-            return new Response('page not found', 404);
+            return Redirect::abort(404, $twig);
         } else {
             $category = $resultSet[0];
         }
@@ -83,7 +84,7 @@ class GuestController extends AbstractController
             ->getRepository(Items::class)
             ->findBy(['alias' => $alias]);
         if(count($resultSet) == 0) {
-            return new Response('page not found', 404);
+            return Redirect::abort(404, $twig);
         } else {
             $item = $resultSet[0];
         }
