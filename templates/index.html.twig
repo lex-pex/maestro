@@ -1,17 +1,26 @@
 {% extends 'layouts/app.html.twig' %}
+{% block title %}{% if title is defined %}{{ title }}{% endif %}{% endblock %}
 {% block content %}
 <div class="container">
     <div class="row no-gutters">
         {% for i in items %}
-        <div class="col-md-4">
-            <div class="card m-2">
-                <div class="card-header"><h4>{{ i.title }}</h4></div>
-                <div class="card-body"><p>{{ i.text }}</p></div>
-                <div class="card-footer"><a class="btn btn-sm btn-secondary" href="#" role="button">View &raquo;</a></div>
+            <div class="col-md-4">
+                <div class="card m-1">
+                    <div class="card-header text-center"><h6>{{ i.title }}</h6></div>
+                    <div class="card-body"><p>{{ i.getShortText }}</p></div>
+                    <div class="card-footer small">
+                        <div class="row">
+                            <div class="col-6 text-left">
+                                <a href="{{ path('category', {alias: categories[i.categoryId].alias}) }}">{{ categories[i.categoryId].name }}</a>
+                            </div>
+                            <div class="col-6 text-right">
+                                <a href="{{ path('item', {alias: i.alias}) }}" role="button">View &raquo;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
         {% endfor %}
     </div>
-    <hr>
 </div>
 {% endblock %}

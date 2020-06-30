@@ -137,6 +137,18 @@ class Items
         return $this;
     }
 
+    /**
+     * Short text content to display on browse page
+     * @return null|string
+     */
+    public function getShortText(): ?string
+    {
+        $length = 100;
+        if(strlen($this->text) > $length)
+            return substr($this->text, 0, $length) . '...';
+        return $this->text;
+    }
+
     public function getImage(): ?string
     {
         return $this->image;

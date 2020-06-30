@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('/img/Maestro.png') }}">
-    <title>{% block titles %}Maestro{% endblock %}</title>
+    <title>{% if title is defined %} {{ title }} | {% endif %} Maestro </title>
 {% block stylesheets %}
     {{ encore_entry_link_tags('app') }}
 {% endblock %}
@@ -34,11 +34,28 @@
     </div>
 </nav>
 <main role="main">
-    <div class="jumbotron">
-        <div class="container"></div>
+    <div class="container-fluid">
+        <div style="width: 100%; height:65px"></div>
+        <div class="row p-0">
+            <div class="col-md-2 col-sm-12">
+                <ul class="nav nav-pills btn-group-vertical">
+                    {% for category in categories %}
+                    <li class="nav-item btn-block">
+                        <a class="nav-item nav-link {{ category.id == category_id ? 'active' : 'border' }}" href="{{ path('category', {alias: category.alias}) }}">{{ category.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-10 col-sm-12 pl-0 pr-3">
+                <div class="jumbotron">
+                    <div class="container"></div>
+                </div>
+                {% block content %}{% endblock %}
+            </div>
+        </div>
     </div>
-    {% block content %}{% endblock %}
 </main>
+<hr />
 <footer class="container">
     <p>&copy; Acme Corporation <script>document.write(new Date().getFullYear())</script></p>
 </footer>

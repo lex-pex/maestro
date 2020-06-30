@@ -1,0 +1,15 @@
+{% extends 'layouts/app.html.twig' %}
+{% block title %}{% if title is defined %}{{ title }}{% endif %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card m-1">
+                <div class="card-header text-center"><h6>{{ item.title }}</h6></div>
+                <div class="card-body"><p>{{ item.text }}</p></div>
+                <div class="card-footer"><small><a href="{{ path('category', {alias: categories[item.categoryId].alias}) }}">{{ categories[item.categoryId].name }}</a></small></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
