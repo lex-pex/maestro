@@ -8,8 +8,12 @@ use App\Entity\Items;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
 
+/**
+ * Class GuestController
+ * open to web resources
+ * @package App\Controller
+ */
 class GuestController extends AbstractController
 {
     /**
@@ -36,18 +40,18 @@ class GuestController extends AbstractController
     /**
      * Display the specified resource.
      * @param  string $alias
-     * @param Environment $twig
+     * @param Redirect $redirect
      * @return Response
      * @Route("/category/{alias}", methods={"get"}, name="category")
      */
-    public function category($alias, Environment $twig)
+    public function category($alias, Redirect $redirect)
     {
         $doctrine = $this->getDoctrine();
         $repository = $doctrine->getRepository(Categories::class);
         $resultSet = $repository->findBy(['alias' => $alias]);
 
         if(count($resultSet) < 1) {
-            return Redirect::abort(404, $twig);
+            return $redirect->abort(404);
         } else {
             $category = $resultSet[0];
         }
@@ -73,18 +77,18 @@ class GuestController extends AbstractController
     /**
      * Display the specified resource.
      * @param  string $alias
-     * @param Environment $twig
+     * @param Redirect $redirect
      * @return Response
      * @Route("/item/{alias}", methods={"get"}, name="item")
      */
-    public function item($alias, Environment $twig)
+    public function item($alias, Redirect $redirect)
     {
         $doctrine = $this->getDoctrine();
         $resultSet = $doctrine
             ->getRepository(Items::class)
             ->findBy(['alias' => $alias]);
         if(count($resultSet) == 0) {
-            return Redirect::abort(404, $twig);
+            return $redirect->abort(404);
         } else {
             $item = $resultSet[0];
         }
