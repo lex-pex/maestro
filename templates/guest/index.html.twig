@@ -1,13 +1,22 @@
 {% extends 'layouts/base.html.twig' %}
 {% block title %}{% if title is defined %}{{ title }}{% endif %}{% endblock %}
 {% block content %}
-<div class="container">
+<div class="container-fluid p-0">
     <div class="row no-gutters">
         {% for i in items %}
             <div class="col-md-4">
                 <div class="card m-1">
                     <div class="card-header text-center"><h6>{{ i.title }}</h6></div>
-                    <div class="card-body"><p>{{ i.getShortText }}</p></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <img src="{{ i.image ? asset(i.image) : asset('img/empty.jpg') }}" width="100%"/>
+                            </div>
+                            <div class="col-6">
+                                <p>{{ i.getShortText }}</p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-footer small">
                         <div class="row">
                             <div class="col-6 text-left">

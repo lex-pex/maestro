@@ -28,7 +28,7 @@ class GuestController extends AbstractController
             ->getRepository(Items::class);
         $items = $repository->findBy([], ['id'=>'desc'], 6, 0);
         return $this->render(
-            'index.html.twig', [
+            'guest/index.html.twig', [
                 'categories' => self::getCategories($doctrine),
                 'category_id' => 1,
                 'items' => $items,
@@ -66,7 +66,7 @@ class GuestController extends AbstractController
         $items = $repository->findBy(['categoryId' => $category->getId()], ['id'=>'desc'], 6, 0);
 
         return $this->render(
-            'index.html.twig', [
+            'guest/index.html.twig', [
             'items' => $items,
             'categories' => $categories,
             'category_id' => $category->getId(),
@@ -94,11 +94,11 @@ class GuestController extends AbstractController
         }
         $categories = self::getCategories($doctrine);
         return $this->render(
-            'items/show.html.twig', [
+            'guest/item.html.twig', [
             'item' => $item,
             'categories' => $categories,
             'category_id' => $item->getCategoryId(),
-            'title' => 'Show Post'
+            'title' => $item->getTitle()
         ]);
     }
 
