@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8 col-sm-12">
-
             <table class="table table-striped">
                 <thead>
                 <tr class="text-center">
@@ -18,26 +17,20 @@
                 <tbody class="text-black-50">
                 {% for item in items %}
                 <tr>
-                    <th scope="row"><small>{{ item.id }}</small></th>
-                    <th scope="row">
-                        <img src="{{ item.image ? item.image : '/img/empty.jpg' }}" width="100%">
-                    </th>
+                    <td scope="row"><small>{{ item.id }}</small></td>
+                    <td scope="row"><img src="{{ item.image ? item.image : '/img/empty.jpg' }}" width="100%"></td>
+                    <td><strong>{{ item.title }}</strong><br />{{ item.getShortText }}</td>
                     <td>
-                        <strong>{{ item.title }}</strong>
-                        <br />{{ item.getShortText }}
-                    </td>
-                    <td>
-                        <a href="{# path('items.edit', item) #}" class="btn btn-sm btn-outline-primary" style="padding: 0 6px 0 6px;"> Edit </a>
-                        <br>
-                        <a onclick="event.preventDefault();deleteConfirm('{{ item.id }}', '{{ item.title }}', '$item')"
+                        <p><a href="{# path('items.edit', item) #}" class="btn btn-sm btn-outline-primary" style="padding: 0 6px 0 6px;"> Edit </a></p>
+                        <p><a onclick="event.preventDefault();deleteConfirm('{{ item.id }}', '{{ item.title }}', '$item')"
                            data-toggle="modal" data-target="#modal-default"
-                           class="btn btn-sm btn-outline-danger text-danger" style="padding: 0 8px 0 7px"> Del </a>
+                           class="btn btn-sm btn-outline-danger text-danger" style="padding:0 8px 0 7px"> Del </a></p>
                     </td>
                     <th scope="row" width="20%">
                         <small>
-                            {{ item.createdAt ? item.createdAt.format('Y-m-d H:i:s') : 'Date unknown' }}
+                            {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}
                             <br/>
-                            {{ item.updatedAt ? item.updatedAt.format('Y-m-d H:i:s') : 'Have no updated' }}
+                            {{ item.updatedAt ? item.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
                         </small>
                     </th>
                 </tr>
@@ -49,7 +42,6 @@
                 </tr>
                 </tbody>
             </table>
-
         </div>
     </div>
 </div>
