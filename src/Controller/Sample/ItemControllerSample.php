@@ -87,10 +87,10 @@ class ItemControllerSample extends AbstractController
     /**
      * Open the form for creating a new resource.
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/items/store", methods={"post"}, name="items.store")
+     * @Route("/items/store_prototype", methods={"post"}, name="items.store_prototype")
      */
     public function store() {
-        dd('here we are');
+        dd('ItemControllerSample::store( post )');
     }
 
     /**
