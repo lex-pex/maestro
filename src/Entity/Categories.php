@@ -159,5 +159,35 @@ class Categories
         return $this;
     }
 
+    /**
+     * Get Categories ordered by ids, where index equals the id
+     * @param $doctrine
+     * @return array [ id = {id, alias, name} ] where index == id
+     */
+    public static function getArray($doctrine) {
+        $cats = $doctrine->getRepository(Categories::class)->findBy([], ['id'=>'asc']);
+        $categories = [];
+        for($i = 0; $i < count($cats); $i ++) {
+            $cat = new \stdClass();
+            $cat->id = $cats[$i]->getId();
+            $cat->alias = $cats[$i]->getAlias();
+            $cat->name = $cats[$i]->getName();
+            $categories[$cats[$i]->getId()] = $cat;
+        }
+        return $categories;
+    }
+
+    /**
+     * Fetch all except main one
+     * @param $doctrine
+     * @param string $order
+     * @return mixed
+     */
+    public static function allExceptMain($doctrine, $order = 'desc') {
+        $repository = $doctrine->getRepository(Categories::class);
+        $query = $repository->createQueryBuilder('c')
+            ->where('c.id > 1')->addOrderBy('c.id', $order)->getQuery();
+        return $query->getResult();
+    }
 
 }

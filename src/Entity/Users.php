@@ -216,5 +216,14 @@ class Users
         return $this;
     }
 
-
+    /**
+     * Get all records
+     * @param $doctrine
+     * @param string $order
+     * @return mixed
+     */
+    public static function all($doctrine, $order = 'desc')
+    {
+        return $doctrine->getRepository(Users::class)->findBy([], ['id' => $order]);
+    }
 }

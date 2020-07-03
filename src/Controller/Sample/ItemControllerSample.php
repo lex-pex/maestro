@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Sample;
 
 /**
  * Class ItemController
@@ -12,12 +12,17 @@ use App\Assist\Redirect;
 use App\Entity\Categories;
 use App\Entity\Items;
 use App\Entity\Users;
-use App\Form\ItemType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ItemController extends AbstractController
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
+
+
+class ItemControllerSample extends AbstractController
 {
     /**
      * Display a listing of the resource.
@@ -39,20 +44,43 @@ class ItemController extends AbstractController
     /**
      * Open the form for creating a new resource.
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/items/create", methods={"get"}, name="items.create")
+     * @Route("/items/create_prototype", methods={"get"}, name="items.create_prototype")
      */
-    public function create()
+    public function create_prototype()
     {
+
+//        dd(new DateTime('now'));
+
         /* if( not admin | moderator | author ) return Redirect::abort('This page is for ${role} only') */
+        $mockUser = new \stdClass();
+        $mockUser->id = 1;
+        $mockUser->name = 'Admin';
+
+        // Form Builder:
+
+        // creates a task object and initializes some data for this example
         $item = new Items();
-        $item->setUserId(3);
-        $form = $this->createForm(ItemType::class, $item);
-        return $this->render('items/create.html.twig', [
+        $item->setTitle('Create an Item');
+        $item->setText('Here is the text part');
+
+        $itemForm = $this->createFormBuilder($item)
+            ->setMethod('POST')
+            ->setAction($this->generateUrl('items.store'))
+            ->add('title', TextType::class)
+            ->add('text', TextareaType::class, ['attr' => ['rows' => 5]])
+            ->add('save', SubmitType::class, ['label' => 'Create Item'])
+            ->getForm();
+
+        // On the template: form( itemForm )
+
+        return $this->render('abort/items/create_prototype.html.twig', [
             'categories' => Categories::allExceptMain($this->getDoctrine()),
             'current_category' => 1,
             'users' => Users::all($this->getDoctrine()), // admin option
-            'form' => $form->createView(),
-            'title' => 'Create Item'
+            'user' => $mockUser, // current author
+            'title' => 'Create Item',
+            // Form Builder:
+            'form' => $itemForm->createView()
         ]);
     }
 

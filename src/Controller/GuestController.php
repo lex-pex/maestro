@@ -29,7 +29,7 @@ class GuestController extends AbstractController
         $items = $repository->findBy([], ['id'=>'desc'], 6, 0);
         return $this->render(
             'guest/index.html.twig', [
-                'categories' => self::getCategories($doctrine),
+                'categories' => Categories::getArray($doctrine),
                 'category_id' => 1,
                 'items' => $items,
                 'title' => 'List of Items'
@@ -61,7 +61,7 @@ class GuestController extends AbstractController
         if($category->getId() == 1) {
             return $this->redirect('/');
         }
-        $categories = self::getCategories($doctrine);
+        $categories = Categories::getArray($doctrine);
         $repository = $doctrine->getRepository(Items::class);
         $items = $repository->findBy(['categoryId' => $category->getId()], ['id'=>'desc'], 6, 0);
 
@@ -84,42 +84,15 @@ class GuestController extends AbstractController
     public function item($alias, Redirect $redirect)
     {
         $doctrine = $this->getDoctrine();
-        $resultSet = $doctrine
-            ->getRepository(Items::class)
-            ->findBy(['alias' => $alias]);
-        if(count($resultSet) == 0) {
+        if(!$item = $doctrine->getRepository(Items::class)->findOneBy(['alias' => $alias]))
             return $redirect->abort(404);
-        } else {
-            $item = $resultSet[0];
-        }
-        $categories = self::getCategories($doctrine);
         return $this->render(
             'guest/item.html.twig', [
             'item' => $item,
-            'categories' => $categories,
+            'categories' => Categories::getArray($doctrine),
             'category_id' => $item->getCategoryId(),
             'title' => $item->getTitle()
         ]);
-    }
-
-    /**
-     * Get Categories ordered by ids
-     * @param $doctrine
-     * @return array [ id = {id, alias, name} ] where index == id
-     */
-    private static function getCategories($doctrine) {
-        $cats = $doctrine
-            ->getRepository(Categories::class)
-            ->findBy([], ['id'=>'asc']);
-        $categories = [];
-        for($i = 0; $i < count($cats); $i ++) {
-            $cat = new \stdClass();
-            $cat->id = $cats[$i]->getId();
-            $cat->alias = $cats[$i]->getAlias();
-            $cat->name = $cats[$i]->getName();
-            $categories[$cats[$i]->getId()] = $cat;
-        }
-        return $categories;
     }
 }
 
