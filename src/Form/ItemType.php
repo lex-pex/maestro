@@ -53,7 +53,10 @@ class ItemType extends AbstractType
             ->setAction('/items/store')
             ->add('title', TextType::class)
             ->add('text', TextareaType::class, ['attr' => ['rows' => 5]])
-            ->add('image', FileType::class, ['required' => false])
+            ->add('image', FileType::class, [
+                'required' => false,
+                'mapped' => false,
+            ])
             ->add('userId', ChoiceType::class, ['label' => 'Author (admin option)', 'choices'  => $users])
             ->add('categoryId', ChoiceType::class, ['choices'  => $categories])
             ->add('status', IntegerType::class)

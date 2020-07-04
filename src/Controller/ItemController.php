@@ -17,6 +17,7 @@ use App\Form\ItemType;
 use DateTime;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -81,11 +82,11 @@ class ItemController extends AbstractController
         $item->setUserId($data['userId']);
         $item->setAlias($data['alias']);
         $item->setCreatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
-//        ImageProcessor::uploadImage($item, $this->imageStorage);
+        ImageProcessor::uploadImage($item, $this->imageStorage, $request);
         $doctrine = $this->getDoctrine();
         $doctrine->getManager()->persist($item);
         $doctrine->getManager()->flush();
-        return $this->redirect('/' . $item->getId());
+        return $this->redirect('/items/' . $item->getAlias());
     }
 
     /**

@@ -3,33 +3,41 @@
 
 namespace App\Assist;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-use Doctrine\ORM\Mapping\Entity;
 
 class ImageProcessor
 {
     /**
      * Save a file on its uploading
-     * @param Entity $item
+     * @param $item
      * @param string $storage
      */
-    public static function uploadImage($item, $storage)
+    public static function uploadImage($item, $storage, $request)
     {
-        if (is_uploaded_file($_FILES['item[image]']['tmp_name'])) {
-            $fileName = $_FILES['image']['name'];
+        if($file = $request->files->get('item')['image']) {
+            $fileName = $file->getClientOriginalName();
             $array = explode('.', $fileName);
             $extension = trim(array_pop($array));
-            $imageDirectory = $storage . date('dmyHis');
-            $imagePath = $imageDirectory . '/' . date('dmyHis') . '.' . $extension;
 
-            if($path = $item->getImage())
-                self::delDir(self::getImageDir($path));
+            $imageDirectory = $storage . date('dmyHis');
+
+            $newName = date('dmyHis') . '.' . $extension;
+
+            if($path = $item->getImage()) {
+                $a = explode('/', $path);
+                if(count($a) < 3) {
+                    self::delDir(self::getImageDir($path));
+                } else {
+                    unlink($path);
+                }
+            }
 
             mkdir($_SERVER['DOCUMENT_ROOT'] . $imageDirectory);
-            move_uploaded_file($_FILES['image']['tmp_name'],
-                $_SERVER['DOCUMENT_ROOT'] . $imagePath
-            );
-            $item->setImage($imagePath);
+
+            $file->move($_SERVER['DOCUMENT_ROOT'] . $imageDirectory, $newName);
+
+            $item->setImage($imageDirectory . '/' . $newName);
         }
     }
 

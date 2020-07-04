@@ -10,7 +10,21 @@
                     <p><img src="{{ item.image ? asset(item.image) : asset('img/empty.jpg') }}" width="100%"/></p>
                     <p>{{ item.text }}</p>
                 </div>
-                <div class="card-footer"><small><a href="{{ path('category', {alias: categories[item.categoryId].alias}) }}">{{ categories[item.categoryId].name }}</a></small></div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-6">
+                            <small><a href="{{ path('category', {alias: categories[item.categoryId].alias}) }}">{{ categories[item.categoryId].name }}</a></small>
+                        </div>
+                        <div class="col-6 text-right">
+                            <small>
+                                Created:
+                                {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
+                                Updated:
+                                {{ item.updatedAt ? item.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
