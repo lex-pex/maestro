@@ -129,6 +129,23 @@ class ItemController extends AbstractController
     }
 
     /**
+     * Destroy the resource by id
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @internal param Request $request
+     * @Route("/items/{id}", methods={"delete"}, name="items.destroy")
+     */
+    public function destroy($id)
+    {
+        $doctrine = $this->getDoctrine();
+        $m = $doctrine->getManager();
+        $post = $m->find(Items::class, $id);
+        $m->remove($post);
+        $m->flush();
+        return $this->redirect('/items');
+    }
+
+    /**
      * Display the specified resource.
      * @param  string $alias
      * @param Redirect $redirect

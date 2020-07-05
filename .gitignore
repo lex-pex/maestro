@@ -2,6 +2,7 @@
 /public/img/categories
 /public/img/users
 ###> symfony/framework-bundle ###
+/writing
 /.env
 /.env.example
 /.env.local

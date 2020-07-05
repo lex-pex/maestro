@@ -14,22 +14,21 @@
                     <th scope="col"> <small>Created/Updated</small></th>
                 </tr>
                 </thead>
-                <tbody class="text-black-50">
+                <tbody>
                 {% for item in items %}
                 <tr>
                     <td scope="row"><small>{{ item.id }}</small></td>
                     <td scope="row"><img src="{{ item.image ? item.image : '/img/empty.jpg' }}" width="100%"></td>
                     <td><strong>{{ item.title }}</strong><br />{{ item.getShortText }}</td>
                     <td>
-                        <p><a href="{# path('items.edit', item) #}" class="btn btn-sm btn-outline-primary" style="padding: 0 6px 0 6px;"> Edit </a></p>
-                        <p><a onclick="event.preventDefault();deleteConfirm('{{ item.id }}', '{{ item.title }}', '$item')"
+                        <p><a href="{{ path('items.edit', {id: item.id}) }} " class="btn btn-sm btn-outline-primary" style="padding: 0 6px 0 6px;"> Edit </a></p>
+                        <p><a onclick="event.preventDefault();deleteConfirm('{{ item.id }}', '{{ item.title }}', 'item')"
                            data-toggle="modal" data-target="#modal-default"
                            class="btn btn-sm btn-outline-danger text-danger" style="padding:0 8px 0 7px"> Del </a></p>
                     </td>
                     <th scope="row" width="20%">
                         <small>
-                            {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}
-                            <br/>
+                            {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
                             {{ item.updatedAt ? item.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
                         </small>
                     </th>
@@ -45,4 +44,6 @@
         </div>
     </div>
 </div>
+{% include 'details/delete.html.twig' %}
 {% endblock %}
+
