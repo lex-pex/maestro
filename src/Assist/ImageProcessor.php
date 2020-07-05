@@ -5,7 +5,6 @@ namespace App\Assist;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-
 class ImageProcessor
 {
     /**
@@ -15,28 +14,24 @@ class ImageProcessor
      */
     public static function uploadImage($item, $storage, $request)
     {
-        if($file = $request->files->get('item')['image']) {
+        if(!$file = $request->files->get('item')['image'])
+            $file = $request->files->get('item_update')['image'];
+        if($file) {
             $fileName = $file->getClientOriginalName();
             $array = explode('.', $fileName);
             $extension = trim(array_pop($array));
-
             $imageDirectory = $storage . date('dmyHis');
-
             $newName = date('dmyHis') . '.' . $extension;
-
             if($path = $item->getImage()) {
                 $a = explode('/', $path);
-                if(count($a) < 3) {
+                if(count($a) > 4) {
                     self::delDir(self::getImageDir($path));
                 } else {
-                    unlink($path);
+                    unlink($_SERVER['DOCUMENT_ROOT'] . $path);
                 }
             }
-
             mkdir($_SERVER['DOCUMENT_ROOT'] . $imageDirectory);
-
             $file->move($_SERVER['DOCUMENT_ROOT'] . $imageDirectory, $newName);
-
             $item->setImage($imageDirectory . '/' . $newName);
         }
     }

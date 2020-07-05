@@ -18,18 +18,14 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-6">
-                            <a href="{# path('items.edit', item) #}" class="btn btn-sm btn-outline-primary" style="padding: 0 6px 0 6px;"> Edit </a>
+                                <a href="{{ path('items.edit', {id: item.id}) }}" class="btn btn-sm btn-outline-primary" style="padding: 0 6px 0 6px;"> Edit </a>
                             <a onclick="event.preventDefault();deleteConfirm('{{ item.id }}', '{{ item.title }}', '$item')"
                                   data-toggle="modal" data-target="#modal-default"
                                   class="btn btn-sm btn-outline-danger text-danger" style="padding:0 8px 0 7px"> Del </a>
                         </div>
-                        <div class="col-6 text-right">
-                            <small>
-                                Created:
-                                {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
-                                Updated:
-                                {{ item.updatedAt ? item.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
-                            </small>
+                        <div class="col-6 text-right small">
+                            Created: {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
+                            Updated: {{ item.updatedAt ? item.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
                         </div>
                     </div>
                 </div>

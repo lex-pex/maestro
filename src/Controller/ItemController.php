@@ -14,6 +14,7 @@ use App\Entity\Categories;
 use App\Entity\Items;
 use App\Entity\Users;
 use App\Form\ItemType;
+use App\Form\ItemUpdateType;
 use DateTime;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,9 +60,6 @@ class ItemController extends AbstractController
         $item->setCategoryId(14); // "Testing Staff" category
         $form = $this->createForm(ItemType::class, $item);
         return $this->render('items/create.html.twig', [
-            'categories' => Categories::allExceptMain($this->getDoctrine()),
-            'current_category' => 1,
-            'users' => Users::all($this->getDoctrine()), // admin option
             'form' => $form->createView(),
             'title' => 'Create Item'
         ]);
@@ -71,11 +69,52 @@ class ItemController extends AbstractController
      * Open the form for creating a new resource.
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/items/store", methods={"post"}, name="items.store")
+     * @Route("/items", methods={"post"}, name="items.store")
      */
     public function store(Request $request) {
         $data = $request->get('item');
         $item = new Items();
+        $item->setTitle($data['title']);
+        $item->setText($data['text']);
+        $item->setCategoryId($data['categoryId']);
+        $item->setUserId($data['userId']);
+        $item->setAlias($data['alias']);
+        $item->setCreatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
+        ImageProcessor::uploadImage($item, $this->imageStorage, $request);
+        $doctrine = $this->getDoctrine();
+        $doctrine->getManager()->persist($item);
+        $doctrine->getManager()->flush();
+        return $this->redirect('/items/' . $item->getAlias());
+    }
+
+    /**
+     * Open the form for creating a new resource.
+     * @param $id
+     * @param Redirect $redirect
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/items/{id}/edit", methods={"get"}, name="items.edit")
+     */
+    public function edit($id, Redirect $redirect)
+    {
+        /* if( not admin | moderator | author ) return Redirect::abort('This page is for ${role} only') */
+        if(!$item = $this->getDoctrine()->getRepository(Items::class)->find($id))
+            $redirect->abort(404);
+        $form = $this->createForm(ItemUpdateType::class, $item);
+        return $this->render('items/create.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Update Item'
+        ]);
+    }
+
+    /**
+     * Open the form for creating a new resource.
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/items", methods={"put"}, name="items.update")
+     */
+    public function update(Request $request) {
+        $data = $request->get('item_update');
+        $item = $this->getDoctrine()->getRepository(Items::class)->find($data['id']);
         $item->setTitle($data['title']);
         $item->setText($data['text']);
         $item->setCategoryId($data['categoryId']);

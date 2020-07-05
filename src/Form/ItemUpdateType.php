@@ -10,6 +10,7 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -17,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ItemType extends AbstractType
+class ItemUpdateType extends AbstractType
 {
     /**
      * @var ManagerRegistry
@@ -49,8 +50,9 @@ class ItemType extends AbstractType
         $users = $this->selectEntries(Users::all($this->doctrine, 'asc'));
         $categories = $this->selectEntries(Categories::allExceptMain($this->doctrine, 'asc'));
         $builder
-            ->setMethod('post')
+            ->setMethod('put')
             ->setAction('/items')
+            ->add('id', HiddenType::class, ['data' => $options['data']->getId()])
             ->add('title', TextType::class)
             ->add('text', TextareaType::class, ['attr' => ['rows' => 5]])
             ->add('image', FileType::class, [
@@ -61,7 +63,7 @@ class ItemType extends AbstractType
             ->add('categoryId', ChoiceType::class, ['choices'  => $categories])
             ->add('status', IntegerType::class)
             ->add('alias', TextType::class, ['attr' => ['placeholder' => 'On empty fills automatically']])
-            ->add('save', SubmitType::class, ['label' => 'Create Item'])
+            ->add('save', SubmitType::class, ['label' => 'Update Item'])
         ;
     }
 

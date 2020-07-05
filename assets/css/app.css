@@ -9,15 +9,17 @@ body{
   background: #0d151b;
 }
 
-
-
-/* Dark Theme */
+/* Dark Theme Amendments */
 .card {
   background: #282b34;
 }
 
 .nav-item {
-  color:#ccc;
+  color:#bbb;
+}
+
+.border {
+  border-color: #777 !important;
 }
 
 .nav-item:hover {

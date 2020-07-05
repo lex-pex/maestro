@@ -15,13 +15,9 @@
                         <div class="col-6">
                             <small><a href="{{ path('category', {alias: categories[item.categoryId].alias}) }}">{{ categories[item.categoryId].name }}</a></small>
                         </div>
-                        <div class="col-6 text-right">
-                            <small>
-                                Created:
-                                {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
-                                Updated:
-                                {{ item.updatedAt ? item.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
-                            </small>
+                        <div class="col-6 text-right small">
+                            Created: {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
+                            Updated: {{ item.updatedAt ? item.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
                         </div>
                     </div>
                 </div>
