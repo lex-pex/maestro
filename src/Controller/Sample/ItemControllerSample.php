@@ -28,7 +28,7 @@ class ItemControllerSample extends AbstractController
      * Display a listing of the resource.
      * Browsing page of all users.
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/items", methods={"get"}, name="items")
+     * @Route("/items_sample", methods={"get"}, name="items_sample")
      */
     public function index()
     {
@@ -44,7 +44,7 @@ class ItemControllerSample extends AbstractController
     /**
      * Open the form for creating a new resource.
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/items/create_prototype", methods={"get"}, name="items.create_prototype")
+     * @Route("/items_sample/create_prototype", methods={"get"}, name="items_sample.create_prototype")
      */
     public function create_prototype()
     {
@@ -87,7 +87,7 @@ class ItemControllerSample extends AbstractController
     /**
      * Open the form for creating a new resource.
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/items/store_prototype", methods={"post"}, name="items.store_prototype")
+     * @Route("/items_sample/store_prototype", methods={"post"}, name="items_sample.store_prototype")
      */
     public function store() {
         dd('ItemControllerSample::store( post )');
@@ -98,7 +98,7 @@ class ItemControllerSample extends AbstractController
      * @param  string $alias
      * @param Redirect $redirect
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/items/{alias}", methods={"get"}, name="items.show")
+     * @Route("/items_sample/{alias}", methods={"get"}, name="items_sample.show")
      */
     public function show($alias, Redirect $redirect)
     {

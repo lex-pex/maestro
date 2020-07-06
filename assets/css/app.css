@@ -6,13 +6,17 @@ body{
   font-family: 'Lato', Tahoma, Verdana, sans-serif;
   font-size: 14px;
   color:#ccc !important;
-  background: #0d151b;
+  background: #30353a;
 }
 
 /* Dark Theme Amendments */
 
 table {
   color:#ccc !important;
+}
+
+.modal-content {
+  background: #282b34;
 }
 
 .card {

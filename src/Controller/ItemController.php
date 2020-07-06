@@ -10,15 +10,12 @@ namespace App\Controller;
  */
 use App\Assist\ImageProcessor;
 use App\Assist\Redirect;
-use App\Entity\Categories;
 use App\Entity\Items;
 use App\Entity\Users;
 use App\Form\ItemType;
 use App\Form\ItemUpdateType;
-use DateTime;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -42,7 +39,8 @@ class ItemController extends AbstractController
         $items = $doctrine
             ->getRepository(Items::class)->findBy([], ['id'=>'desc'], 6, 0);
         return $this->render('items/index.html.twig', [
-            'items' => $items
+            'items' => $items,
+            'title' => 'Items List'
         ]);
     }
 
