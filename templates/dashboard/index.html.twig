@@ -1,15 +1,36 @@
 {% extends 'layouts/app.html.twig' %}
 {% block main %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills btn-group-vertical">
+                <li class="nav-item btn-block">
+                    <a class="nav-item nav-link active" href="{{ path('dashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item btn-block">
+                    <a class="nav-item nav-link border" href="/categories">Categories</a>
+                </li>
+                <li class="nav-item btn-block">
+                    <a class="nav-item nav-link border" href="/categories">Add Category</a>
+                </li>
+                <li class="nav-item btn-block">
+                    <a class="nav-item nav-link border" href="{{ path('items') }}">Items List</a>
+                </li>
+                <li class="nav-item btn-block">
+                    <a class="nav-item nav-link border" href="{{ path('items.create') }}">Add Item</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8">
+{% block content %}
             <div class="card">
                 <div class="card-header">Dashboard</div>
-                <div class="cord-body p-2">
-                    <a href="{{ path('items') }}">Items Index</a>
+                <div class="cord-body p-2 text-right">
+                    <img src="{{ asset('img/Maestro.png') }}" />
                 </div>
                 <div class="card-footer">acme corp</div>
             </div>
+{% endblock %}
         </div>
     </div>
 </div>

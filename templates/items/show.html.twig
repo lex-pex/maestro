@@ -1,33 +1,27 @@
-{% extends 'layouts/app.html.twig' %}
+{% extends 'dashboard/index.html.twig' %}
 {% block title %}{% if title is defined %}{{ title }}{% endif %}{% endblock %}
-{% block main %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card m-1">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-2">{{ item.id }}</div>
-                        <div class="col-10"><h6 id="item_name_{{item.id}}">{{ item.title }}</h6></div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p><img src="{{ item.image ? asset(item.image) : asset('img/empty.jpg') }}" width="100%"/></p>
-                    <p>{{ item.text }}</p>
-                </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col-6">
-                            <a href="{{ path('items.edit', {id: item.id}) }}" class="btn btn-sm btn-outline-primary" style="padding:0 6px 0 6px">Edit</a>
-                            <a onclick="event.preventDefault();deleteConfirm('{{ item.id }}', 'items')"
-                                  data-toggle="modal" data-target="#modal-default" class="btn btn-sm btn-outline-danger text-danger" style="padding:0 8px 0 7px">Del</a>
-                        </div>
-                        <div class="col-6 text-right small">
-                            Created: {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
-                            Updated: {{ item.updatedAt ? item.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
-                        </div>
-                    </div>
-                </div>
+{% block content %}
+<div class="card" style="max-width:550px;margin:auto">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-2">{{ item.id }}</div>
+            <div class="col-10"><h6 id="item_name_{{item.id}}">{{ item.title }}</h6></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p><img src="{{ item.image ? asset(item.image) : asset('img/empty.jpg') }}" width="100%"/></p>
+        <p>{{ item.text }}</p>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-6">
+                <a href="{{ path('items.edit', {id: item.id}) }}" class="btn btn-sm btn-outline-primary" style="padding:0 6px 0 6px">Edit</a>
+                <a onclick="event.preventDefault();deleteConfirm('{{ item.id }}', 'items')"
+                      data-toggle="modal" data-target="#modal-default" class="btn btn-sm btn-outline-danger text-danger" style="padding:0 8px 0 7px">Del</a>
+            </div>
+            <div class="col-6 text-right small">
+                Created: {{ item.createdAt ? item.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
+                Updated: {{ item.updatedAt ? item.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
             </div>
         </div>
     </div>
