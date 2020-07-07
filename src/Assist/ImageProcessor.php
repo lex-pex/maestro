@@ -27,7 +27,8 @@ class ImageProcessor
                 if(count($a) > 4) {
                     self::delDir(self::getImageDir($path));
                 } else {
-                    unlink($_SERVER['DOCUMENT_ROOT'] . $path);
+                    if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path))
+                        unlink($_SERVER['DOCUMENT_ROOT'] . $path);
                 }
             }
             mkdir($_SERVER['DOCUMENT_ROOT'] . $imageDirectory);
@@ -79,5 +80,18 @@ class ImageProcessor
         $a = explode('/', $path);
         unset($a[count($a) - 1]);
         return implode('/', $a);
+    }
+
+    public static function imageDelete($item)
+    {
+        if($path = $item->getImage()) {
+            $a = explode('/', $path);
+            if(count($a) > 4) {
+                self::delDir(self::getImageDir($path));
+            } else {
+                if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path))
+                    unlink($_SERVER['DOCUMENT_ROOT'] . $path);
+            }
+        }
     }
 }

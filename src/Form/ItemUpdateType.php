@@ -8,6 +8,7 @@ use App\Entity\Users;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -57,6 +58,7 @@ class ItemUpdateType extends AbstractType
                 'mapped' => false,
                 'label' => false,
             ])
+            ->add('image_del',  CheckboxType::class, ['label' => 'Delete Image', 'mapped' => false, 'required' => false])
             ->add('id', HiddenType::class, ['data' => $options['data']->getId()])
             ->add('title', TextType::class)
             ->add('text', TextareaType::class, ['attr' => ['rows' => 5]])

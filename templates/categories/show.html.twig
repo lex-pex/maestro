@@ -1,0 +1,30 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}{% if title is defined %}{{ title }}{% endif %}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:550px;margin:auto">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-2">{{ category.id }}</div>
+            <div class="col-10"><h6 id="item_name_{{category.id}}">{{ category.name }}</h6></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p><img src="{{ category.image ? asset(category.image) : asset('img/empty.jpg') }}" width="100%"/></p>
+        <p>{{ category.description }}</p>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-6">
+                <a href="{{ path('categories.edit', {id: category.id}) }}" class="btn btn-sm btn-outline-primary" style="padding:0 6px 0 6px">Edit</a>
+                <a onclick="event.preventDefault();deleteConfirm('{{ category.id }}', 'categories')"
+                      data-toggle="modal" data-target="#modal-default" class="btn btn-sm btn-outline-danger text-danger" style="padding:0 8px 0 7px">Del</a>
+            </div>
+            <div class="col-6 text-right small">
+                Created: {{ category.createdAt ? category.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
+                Updated: {{ category.updatedAt ? category.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'details/delete.html.twig' %}
+{% endblock %}

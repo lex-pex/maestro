@@ -1,0 +1,46 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}{% if title is defined %}{{ title }}{% endif %}{% endblock %}
+{% block content %}
+<table class="table table-striped">
+    <thead>
+    <tr class="text-center">
+        <th scope="col" width="1%">id</th>
+        <th scope="col" width="20%">Image</th>
+        <th scope="col">Name</th>
+        <th scope="col" width="5%">Edit</th>
+        <th scope="col"> <small>Created/Updated</small></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for category in categories %}
+    <tr>
+        <td scope="row"><small>{{ category.id }}</small></td>
+        <td scope="row"><img src="{{ category.image ? category.image : '/img/empty.jpg' }}" width="100%"></td>
+        <td>
+            <strong><a href="{{ path('categories.show', {'alias': category.alias}) }}" id="item_name_{{category.id}}">{{category.name}}</a></strong>
+            <br />{{category.description}}
+        </td>
+        <td>
+            <a href="{{ path('categories.edit', {id: category.id}) }} " class="btn btn-sm btn-outline-primary" style="padding:0 6px 0 6px">Edit</a>
+            <br/>
+            <a onclick="event.preventDefault();deleteConfirm('{{ category.id }}', 'categories')" data-toggle="modal" data-target="#modal-default"
+               class="btn btn-sm btn-outline-danger text-danger" style="padding:0 8px 0 7px">Del</a>
+        </td>
+        <th scope="row" width="20%">
+            <small>
+                {{ category.createdAt ? category.createdAt.format('y-m-d H:i') : 'Date unknown' }}<br/>
+                {{ category.updatedAt ? category.updatedAt.format('y-m-d H:i') : 'Have no updated' }}
+            </small>
+        </th>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="5" class="text-center">
+            {% if title is defined %}{{ title }}{% else %} page title {% endif %}
+        </td>
+    </tr>
+    </tbody>
+</table>
+{% include 'details/delete.html.twig' %}
+{% endblock %}
+

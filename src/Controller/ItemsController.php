@@ -19,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ItemController extends AbstractController
+class ItemsController extends AbstractController
 {
     /**
      * @var string path to store this items files
@@ -119,7 +119,11 @@ class ItemController extends AbstractController
         $item->setCategoryId($data['categoryId']);
         $item->setUserId($data['userId']);
         $item->setAlias($data['alias']);
-        $item->setCreatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
+        $item->setUpdatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
+        if(isset($data['image_del'])) {
+            ImageProcessor::imageDelete($item);
+            $item->setImage('');
+        }
         ImageProcessor::uploadImage($item, $this->imageStorage, $request);
         $doctrine = $this->getDoctrine();
         $doctrine->getManager()->persist($item);
