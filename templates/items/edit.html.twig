@@ -1,0 +1,12 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}{% if title is defined %}{{ title }}{% endif %}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:550px;margin:auto">
+    <div class="card-header">{{ title }}</div>
+    <div class="card-body">
+        <p><img src="{{ asset(item.image ? item.image : '/img/empty.jpg') }}" width="100%" /></p>
+        {{ form(form) }}
+    </div>
+    <div class="card-footer text-center">Maestro</div>
+</div>
+{% endblock %}

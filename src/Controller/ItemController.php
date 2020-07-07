@@ -98,9 +98,10 @@ class ItemController extends AbstractController
         if(!$item = $this->getDoctrine()->getRepository(Items::class)->find($id))
             $redirect->abort(404);
         $form = $this->createForm(ItemUpdateType::class, $item);
-        return $this->render('items/create.html.twig', [
+        return $this->render('items/edit.html.twig', [
+            'item' => $item,
             'form' => $form->createView(),
-            'title' => 'Update Item'
+            'title' => 'Edit Item'
         ]);
     }
 

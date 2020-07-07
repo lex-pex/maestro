@@ -52,13 +52,14 @@ class ItemUpdateType extends AbstractType
         $builder
             ->setMethod('put')
             ->setAction('/items')
-            ->add('id', HiddenType::class, ['data' => $options['data']->getId()])
-            ->add('title', TextType::class)
-            ->add('text', TextareaType::class, ['attr' => ['rows' => 5]])
             ->add('image', FileType::class, [
                 'required' => false,
                 'mapped' => false,
+                'label' => false,
             ])
+            ->add('id', HiddenType::class, ['data' => $options['data']->getId()])
+            ->add('title', TextType::class)
+            ->add('text', TextareaType::class, ['attr' => ['rows' => 5]])
             ->add('userId', ChoiceType::class, ['label' => 'Author (admin option)', 'choices'  => $users])
             ->add('categoryId', ChoiceType::class, ['choices'  => $categories])
             ->add('status', IntegerType::class)
