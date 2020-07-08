@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Assist\Pager;
 use App\Assist\Redirect;
 use App\Entity\Categories;
 use App\Entity\Items;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,57 +23,60 @@ class GuestController extends AbstractController
      * @return Response
      * @Route("/", methods={"get"}, name="main")
      */
-    public function index()
+    public function index(Request $request)
     {
         $doctrine = $this->getDoctrine();
-        $repository = $doctrine
-            ->getRepository(Items::class);
-        $items = $repository->findBy([], ['id'=>'desc'], 6, 0);
-        return $this->render(
-            'guest/index.html.twig', [
-                'categories' => Categories::getArray($doctrine),
-                'category_id' => 1,
-                'items' => $items,
-                'title' => 'List of Items'
-            ]
-        );
+        $repository = $doctrine->getRepository(Items::class);
+        $p = $request->get('page');
+        $page = ($p && is_numeric($p)) ? abs($p) : 1;
+        $limit = 6;
+        $offset = $limit * ($page - 1);
+        $total = count($repository->findBy([], []));
+        $items = $repository->findBy([], ['id'=>'desc'], $limit, $offset);
+        return $this->render('guest/index.html.twig', [
+            'categories' => Categories::getArray($doctrine),
+            'category_id' => 1,
+            'items' => $items,
+            'pager' => Pager::widget($total, $limit, $page, '/'),
+            'title' => 'Main Items List',
+        ]);
     }
 
     /**
      * Display the specified resource.
      * @param  string $alias
+     * @param Request $request
      * @param Redirect $redirect
      * @return Response
      * @Route("/category/{alias}", methods={"get"}, name="category")
      */
-    public function category($alias, Redirect $redirect)
+    public function category($alias, Request $request, Redirect $redirect)
     {
         $doctrine = $this->getDoctrine();
+
         $repository = $doctrine->getRepository(Categories::class);
-        $resultSet = $repository->findBy(['alias' => $alias]);
+        $category = $repository->findOneBy(['alias' => $alias]);
 
-        if(count($resultSet) < 1) {
-            return $redirect->abort(404);
-        } else {
-            $category = $resultSet[0];
-        }
-        /**
-         * Main category #1 by default doesn't have any own items
-         */
-        if($category->getId() == 1) {
-            return $this->redirect('/');
-        }
-        $categories = Categories::getArray($doctrine);
+        if(!$category) return $redirect->abort(404);
+
         $repository = $doctrine->getRepository(Items::class);
-        $items = $repository->findBy(['categoryId' => $category->getId()], ['id'=>'desc'], 6, 0);
 
-        return $this->render(
-            'guest/index.html.twig', [
-            'items' => $items,
-            'categories' => $categories,
+        $p = $request->get('page');
+        $page = ($p && is_numeric($p)) ? abs($p) : 1;
+        $limit = 6;
+        $offset = $limit * ($page - 1);
+        $total = count($repository->findBy(['categoryId' => $category->getId()], []));
+
+        $items = $repository->findBy(['categoryId' => $category->getId()], ['id'=>'desc'], $limit, $offset);
+
+        return $this->render('guest/index.html.twig', [
+            'categories' => Categories::getArray($doctrine),
             'category_id' => $category->getId(),
+            'items' => $items,
+            'pager' => Pager::widget($total, $limit, $page),
             'title' => 'Category: ' . $category->getName()
         ]);
+
     }
 
     /**

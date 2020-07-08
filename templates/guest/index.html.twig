@@ -32,4 +32,14 @@
         {% endfor %}
     </div>
 </div>
+<hr/>
+<div class="row justify-content-center">
+    <nav aria-label="page navigation">
+        <ul class="pagination">
+            {% for p in pager %}
+                <li class="page-item {{ p['class'] }}"><a class="page-link" href="{{ p['urn'] }}">{{ p['label'] }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</div>
 {% endblock %}

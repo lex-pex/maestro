@@ -9,6 +9,7 @@ namespace App\Controller;
  * @package App\Controller
  */
 use App\Assist\ImageProcessor;
+use App\Assist\Pager;
 use App\Assist\Redirect;
 use App\Entity\Items;
 use App\Entity\Users;
@@ -29,18 +30,25 @@ class ItemsController extends AbstractController
     /**
      * Display a listing of the resource.
      * Browsing page of all users.
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/items", methods={"get"}, name="items")
      */
-    public function index()
+    public function index(Request $request)
     {
         /* if( not admin ) return Redirect::abort('This page is for Admin only') */
-        $doctrine = $this->getDoctrine();
-        $items = $doctrine
-            ->getRepository(Items::class)->findBy([], ['id'=>'desc'], 6, 0);
-        return $this->render('items/index.html.twig', [
+        $repository = $this->getDoctrine()->getRepository(Items::class);
+        $p = $request->get('page');
+        $page = ($p && is_numeric($p)) ? abs($p) : 1;
+        $limit = 6;
+        $offset = $limit * ($page - 1);
+        $total = count($repository->findBy([], []));
+        $items = $repository->findBy([], ['id'=>'desc'], $limit, $offset);
+        return $this->render(
+            'items/index.html.twig', [
             'items' => $items,
-            'title' => 'Items List'
+            'pager' => Pager::widget($total, $limit, $page, '/items/'),
+            'title' => 'Items List',
         ]);
     }
 
