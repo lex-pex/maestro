@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Assist;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -11,11 +10,13 @@ class ImageProcessor
      * Save a file on its uploading
      * @param $item
      * @param string $storage
+     * @param $request
      */
     public static function uploadImage($item, $storage, $request)
     {
+        $itemName = self::getItemName($item);
         if(!$file = $request->files->get('item')['image'])
-            $file = $request->files->get('item_update')['image'];
+            $file = $request->files->get($itemName.'_update')['image'];
         if($file) {
             $fileName = $file->getClientOriginalName();
             $array = explode('.', $fileName);
@@ -94,4 +95,48 @@ class ImageProcessor
             }
         }
     }
+
+    /**
+     * Get name in singular
+     * @param $item - Entity Object
+     * @return string
+     */
+    private static function getItemName($item)
+    {
+        // Fully qualified class name in lower case
+        $n = strtolower(get_class($item));
+        // Get rid of namespaces
+        $n = (substr($n, strrpos($n, '\\') + 1));
+        // Replace according word ending '-ies' / '-s'
+        if($n[strlen($n) - 1] == 's') {
+            if($n[strlen($n) - 3] == 'i')
+                return substr($n, 0,strlen($n) - 3) . 'y';
+            return substr($n, 0,strlen($n) - 1);
+        }
+        return $n;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

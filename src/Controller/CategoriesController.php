@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Assist\ImageProcessor;
 use App\Assist\Redirect;
 use App\Entity\Categories;
+use App\Form\CategoryType;
 use App\Form\CategoryUpdateType;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,6 +36,42 @@ class CategoriesController extends AbstractController
 
     /**
      * Open the form for creating a new resource.
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/categories/create", methods={"get"}, name="categories.create")
+     */
+    public function create()
+    {
+        /* if( not admin | moderator ) return Redirect::abort('This page is for ${role} only') */
+        $category = new Categories();
+        $form = $this->createForm(CategoryType::class, $category);
+        return $this->render('categories/create.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Create Category'
+        ]);
+    }
+
+    /**
+     * Open the form for creating a new resource.
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/categories", methods={"post"}, name="categories.store")
+     */
+    public function store(Request $request) {
+        $data = $request->get('category');
+        $category = new Categories();
+        $category->setName($data['name']);
+        $category->setDescription($data['description']);
+        $category->setAlias($data['alias']);
+        $category->setCreatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
+        ImageProcessor::uploadImage($category, $this->imageStorage, $request);
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($category);
+        $manager->flush();
+        return $this->redirect('/category/' . $category->getAlias());
+    }
+
+    /**
+     * Open the form for creating a new resource.
      * @param $id
      * @param Redirect $redirect
      * @return \Symfony\Component\HttpFoundation\Response
@@ -61,20 +98,20 @@ class CategoriesController extends AbstractController
      */
     public function update(Request $request) {
         $data = $request->get('category_update');
-        $item = $this->getDoctrine()->getRepository(Categories::class)->find($data['id']);
-        $item->setName($data['name']);
-        $item->setDescription($data['description']);
-        $item->setAlias($data['alias']);
-        $item->setUpdatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
+        $category = $this->getDoctrine()->getRepository(Categories::class)->find($data['id']);
+        $category->setName($data['name']);
+        $category->setDescription($data['description']);
+        $category->setAlias($data['alias']);
+        $category->setUpdatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
         if(isset($data['image_del'])) {
-            ImageProcessor::imageDelete($item);
-            $item->setImage('');
+            ImageProcessor::imageDelete($category);
+            $category->setImage('');
         }
-        ImageProcessor::uploadImage($item, $this->imageStorage, $request);
+        ImageProcessor::uploadImage($category, $this->imageStorage, $request);
         $doctrine = $this->getDoctrine();
-        $doctrine->getManager()->persist($item);
+        $doctrine->getManager()->persist($category);
         $doctrine->getManager()->flush();
-        return $this->redirect('/categories/' . $item->getAlias());
+        return $this->redirect('/categories/' . $category->getAlias());
     }
 
     /**

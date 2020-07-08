@@ -21,19 +21,14 @@ class CategoryUpdateType extends AbstractType
         $builder
         ->setMethod('put')
         ->setAction('/categories')
-        ->add('image', FileType::class, [
-            'required' => false,
-            'mapped' => false,
-            'label' => false,
-        ])
+        ->add('image', FileType::class, ['required' => false, 'mapped' => false, 'label' => false])
         ->add('image_del',  CheckboxType::class, ['label' => 'Delete Image', 'mapped' => false, 'required' => false])
         ->add('id', HiddenType::class, ['data' => $options['data']->getId()])
         ->add('name', TextType::class)
         ->add('description', TextareaType::class, ['attr' => ['rows' => 5]])
         ->add('status', IntegerType::class)
         ->add('alias', TextType::class, ['attr' => ['placeholder' => 'On empty fills automatically']])
-        ->add('save', SubmitType::class, ['label' => 'Update Item'])
-    ;
+        ->add('save', SubmitType::class, ['label' => 'Update Item']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
