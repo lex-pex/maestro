@@ -109,7 +109,7 @@ class ImageProcessor
         $n = (substr($n, strrpos($n, '\\') + 1));
         // Replace according word ending '-ies' / '-s'
         if($n[strlen($n) - 1] == 's') {
-            if($n[strlen($n) - 3] == 'i')
+            if($n[strlen($n) - 2] == 'e')
                 return substr($n, 0,strlen($n) - 3) . 'y';
             return substr($n, 0,strlen($n) - 1);
         }

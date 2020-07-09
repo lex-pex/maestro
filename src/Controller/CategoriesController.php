@@ -115,6 +115,22 @@ class CategoriesController extends AbstractController
     }
 
     /**
+     * Destroy the resource by id
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @internal param Request $request
+     * @Route("/categories/{id}", methods={"delete"}, name="categories.destroy")
+     */
+    public function destroy($id)
+    {
+        $m = $this->getDoctrine()->getManager();
+        $post = $m->find(Categories::class, $id);
+        $m->remove($post);
+        $m->flush();
+        return $this->redirect('/categories');
+    }
+
+    /**
      * Display the specified resource.
      * @param  string $alias
      * @param Redirect $redirect

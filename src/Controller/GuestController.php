@@ -20,6 +20,7 @@ class GuestController extends AbstractController
 {
     /**
      * Display a listing of the resource.
+     * @param Request $request
      * @return Response
      * @Route("/", methods={"get"}, name="main")
      */
@@ -53,22 +54,16 @@ class GuestController extends AbstractController
     public function category($alias, Request $request, Redirect $redirect)
     {
         $doctrine = $this->getDoctrine();
-
         $repository = $doctrine->getRepository(Categories::class);
         $category = $repository->findOneBy(['alias' => $alias]);
-
         if(!$category) return $redirect->abort(404);
-
         $repository = $doctrine->getRepository(Items::class);
-
         $p = $request->get('page');
         $page = ($p && is_numeric($p)) ? abs($p) : 1;
         $limit = 6;
         $offset = $limit * ($page - 1);
         $total = count($repository->findBy(['categoryId' => $category->getId()], []));
-
         $items = $repository->findBy(['categoryId' => $category->getId()], ['id'=>'desc'], $limit, $offset);
-
         return $this->render('guest/index.html.twig', [
             'categories' => Categories::getArray($doctrine),
             'category_id' => $category->getId(),
@@ -76,7 +71,6 @@ class GuestController extends AbstractController
             'pager' => Pager::widget($total, $limit, $page),
             'title' => 'Category: ' . $category->getName()
         ]);
-
     }
 
     /**
