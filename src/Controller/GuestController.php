@@ -57,6 +57,7 @@ class GuestController extends AbstractController
         $repository = $doctrine->getRepository(Categories::class);
         $category = $repository->findOneBy(['alias' => $alias]);
         if(!$category) return $redirect->abort(404);
+        if($category->getId() == 1) return $this->redirect('/');
         $repository = $doctrine->getRepository(Items::class);
         $p = $request->get('page');
         $page = ($p && is_numeric($p)) ? abs($p) : 1;

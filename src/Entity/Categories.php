@@ -162,10 +162,15 @@ class Categories
     /**
      * Get Categories ordered by ids, where index equals the id
      * @param $doctrine
+     * @param bool $except_main
      * @return array [ id = {id, alias, name} ] where index == id
+     * ] where index == id
      */
-    public static function getArray($doctrine) {
-        $cats = $doctrine->getRepository(Categories::class)->findBy([], ['id'=>'asc']);
+    public static function getArray($doctrine, bool $except_main = false) {
+        if($except_main)
+            $cats = self::allExceptMain($doctrine);
+        else
+            $cats = $doctrine->getRepository(Categories::class)->findBy([], ['id'=>'asc']);
         $categories = [];
         for($i = 0; $i < count($cats); $i ++) {
             $cat = new \stdClass();
