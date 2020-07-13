@@ -168,18 +168,27 @@ class Categories
      */
     public static function getArray($doctrine, bool $except_main = false) {
         if($except_main)
-            $cats = self::allExceptMain($doctrine);
+            $categories = self::allExceptMain($doctrine);
         else
-            $cats = $doctrine->getRepository(Categories::class)->findBy([], ['id'=>'asc']);
-        $categories = [];
-        for($i = 0; $i < count($cats); $i ++) {
+            $categories = $doctrine->getRepository(Categories::class)->findBy([], ['id'=>'asc']);
+        return self::toArrayByIds($categories);
+    }
+
+    /**
+     * Pack items into array with keys according items id
+     * @param $categories
+     * @return array of Categories
+     */
+    private static function toArrayByIds($categories) {
+        $array = [];
+        for($i = 0; $i < count($categories); $i ++) {
             $cat = new \stdClass();
-            $cat->id = $cats[$i]->getId();
-            $cat->alias = $cats[$i]->getAlias();
-            $cat->name = $cats[$i]->getName();
-            $categories[$cats[$i]->getId()] = $cat;
+            $cat->id = $categories[$i]->getId();
+            $cat->alias = $categories[$i]->getAlias();
+            $cat->name = $categories[$i]->getName();
+            $array[$categories[$i]->getId()] = $cat;
         }
-        return $categories;
+        return $array;
     }
 
     /**
@@ -194,5 +203,4 @@ class Categories
             ->where('c.id > 1')->addOrderBy('c.id', $order)->getQuery();
         return $query->getResult();
     }
-
 }
