@@ -25,9 +25,9 @@ class CategoryUpdateType extends AbstractType
         ->add('image_del',  CheckboxType::class, ['label' => 'Delete Image', 'mapped' => false, 'required' => false])
         ->add('id', HiddenType::class, ['data' => $options['data']->getId()])
         ->add('name', TextType::class)
-        ->add('description', TextareaType::class, ['attr' => ['rows' => 5]])
+        ->add('description', TextareaType::class, ['required' => false, 'attr' => ['rows' => 5]])
         ->add('status', IntegerType::class)
-        ->add('alias', TextType::class, ['attr' => ['placeholder' => 'On empty fills automatically']])
+        ->add('alias', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'On empty fills automatically']])
         ->add('save', SubmitType::class, ['label' => 'Update Item']);
     }
 

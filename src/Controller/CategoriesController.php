@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Assist\AliasProcessor;
 use App\Assist\ImageProcessor;
 use App\Assist\Redirect;
 use App\Entity\Categories;
@@ -61,13 +62,18 @@ class CategoriesController extends AbstractController
         $category = new Categories();
         $category->setName($data['name']);
         $category->setDescription($data['description']);
-        $category->setAlias($data['alias']);
         $category->setCreatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
+        $doctrine = $this->getDoctrine();
+        $repository = $doctrine->getRepository(Categories::class);
+        if($data['alias'])
+            $category->setAlias(AliasProcessor::getAlias($data['alias'], $repository));
+        else
+            $category->setAlias(AliasProcessor::getAlias($data['name'], $repository));
         ImageProcessor::uploadImage($category, $this->imageStorage, $request);
-        $manager = $this->getDoctrine()->getManager();
+        $manager = $doctrine->getManager();
         $manager->persist($category);
         $manager->flush();
-        return $this->redirect('/category/' . $category->getAlias());
+        return $this->redirect('/categories/' . $category->getAlias());
     }
 
     /**
@@ -101,7 +107,6 @@ class CategoriesController extends AbstractController
         $category = $this->getDoctrine()->getRepository(Categories::class)->find($data['id']);
         $category->setName($data['name']);
         $category->setDescription($data['description']);
-        $category->setAlias($data['alias']);
         $category->setUpdatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
         if(isset($data['image_del'])) {
             ImageProcessor::imageDelete($category);
@@ -109,6 +114,8 @@ class CategoriesController extends AbstractController
         }
         ImageProcessor::uploadImage($category, $this->imageStorage, $request);
         $doctrine = $this->getDoctrine();
+        $repository = $doctrine->getRepository(Categories::class);
+        AliasProcessor::aliasUpdate($data['alias'], $data['name'], $category, $repository);
         $doctrine->getManager()->persist($category);
         $doctrine->getManager()->flush();
         return $this->redirect('/categories/' . $category->getAlias());

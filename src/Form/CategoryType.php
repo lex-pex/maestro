@@ -21,9 +21,9 @@ class CategoryType extends AbstractType
             ->setAction('/categories')
             ->add('image', FileType::class, ['required' => false, 'mapped' => false, 'label' => false,])
             ->add('name', TextType::class)
-            ->add('description', TextareaType::class, ['attr' => ['rows' => 5]])
+            ->add('description', TextareaType::class, ['required' => false, 'attr' => ['rows' => 5]])
             ->add('status', IntegerType::class)
-            ->add('alias', TextType::class, ['attr' => ['placeholder' => 'On empty fills automatically']])
+            ->add('alias', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'On empty fills automatically']])
             ->add('save', SubmitType::class, ['label' => 'Update Item']);
     }
 
