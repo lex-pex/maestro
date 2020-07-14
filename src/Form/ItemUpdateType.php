@@ -50,14 +50,9 @@ class ItemUpdateType extends AbstractType
     {
         $users = $this->selectEntries(Users::all($this->doctrine, 'asc'));
         $categories = $this->selectEntries(Categories::allExceptMain($this->doctrine, 'asc'));
-        $builder
-            ->setMethod('put')
+        $builder->setMethod('put')
             ->setAction('/items')
-            ->add('image', FileType::class, [
-                'required' => false,
-                'mapped' => false,
-                'label' => false,
-            ])
+            ->add('image', FileType::class, ['required' => false, 'mapped' => false, 'label' => false])
             ->add('image_del',  CheckboxType::class, ['label' => 'Delete Image', 'mapped' => false, 'required' => false])
             ->add('id', HiddenType::class, ['data' => $options['data']->getId()])
             ->add('title', TextType::class)
@@ -65,9 +60,8 @@ class ItemUpdateType extends AbstractType
             ->add('userId', ChoiceType::class, ['label' => 'Author (admin option)', 'choices'  => $users])
             ->add('categoryId', ChoiceType::class, ['choices'  => $categories])
             ->add('status', IntegerType::class)
-            ->add('alias', TextType::class, ['attr' => ['placeholder' => 'On empty fills automatically']])
-            ->add('save', SubmitType::class, ['label' => 'Update Item'])
-        ;
+            ->add('alias', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'On empty fills automatically']])
+            ->add('save', SubmitType::class, ['label' => 'Update Item']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

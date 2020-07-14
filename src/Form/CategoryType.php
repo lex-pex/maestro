@@ -16,8 +16,7 @@ class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->setMethod('post')
+        $builder->setMethod('post')
             ->setAction('/categories')
             ->add('image', FileType::class, ['required' => false, 'mapped' => false, 'label' => false,])
             ->add('name', TextType::class)

@@ -8,6 +8,7 @@ namespace App\Controller;
  * closed from web Items resource
  * @package App\Controller
  */
+use App\Assist\AliasProcessor;
 use App\Assist\ImageProcessor;
 use App\Assist\Pager;
 use App\Assist\Redirect;
@@ -84,10 +85,14 @@ class ItemsController extends AbstractController
         $item->setText($data['text']);
         $item->setCategoryId($data['categoryId']);
         $item->setUserId($data['userId']);
-        $item->setAlias($data['alias']);
         $item->setCreatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
         ImageProcessor::uploadImage($item, $this->imageStorage, $request);
         $doctrine = $this->getDoctrine();
+        $repository = $doctrine->getRepository(Items::class);
+        if($data['alias'])
+            $item->setAlias(AliasProcessor::getAlias($data['alias'], $repository));
+        else
+            $item->setAlias(AliasProcessor::getAlias($data['title'], $repository));
         $doctrine->getManager()->persist($item);
         $doctrine->getManager()->flush();
         return $this->redirect('/items/' . $item->getAlias());
@@ -126,7 +131,6 @@ class ItemsController extends AbstractController
         $item->setText($data['text']);
         $item->setCategoryId($data['categoryId']);
         $item->setUserId($data['userId']);
-        $item->setAlias($data['alias']);
         $item->setUpdatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
         if(isset($data['image_del'])) {
             ImageProcessor::imageDelete($item);
@@ -134,6 +138,8 @@ class ItemsController extends AbstractController
         }
         ImageProcessor::uploadImage($item, $this->imageStorage, $request);
         $doctrine = $this->getDoctrine();
+        $repository = $doctrine->getRepository(Items::class);
+        AliasProcessor::aliasUpdate($data['alias'], $data['title'], $item, $repository);
         $doctrine->getManager()->persist($item);
         $doctrine->getManager()->flush();
         return $this->redirect('/items/' . $item->getAlias());

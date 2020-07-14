@@ -53,14 +53,11 @@ class ItemType extends AbstractType
             ->setAction('/items')
             ->add('title', TextType::class)
             ->add('text', TextareaType::class, ['attr' => ['rows' => 5]])
-            ->add('image', FileType::class, [
-                'required' => false,
-                'mapped' => false,
-            ])
+            ->add('image', FileType::class, ['required' => false, 'mapped' => false])
             ->add('userId', ChoiceType::class, ['label' => 'Author (admin option)', 'choices'  => $users])
             ->add('categoryId', ChoiceType::class, ['choices'  => $categories])
             ->add('status', IntegerType::class)
-            ->add('alias', TextType::class, ['attr' => ['placeholder' => 'On empty fills automatically']])
+            ->add('alias', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'On empty fills automatically']])
             ->add('save', SubmitType::class, ['label' => 'Create Item'])
         ;
     }
