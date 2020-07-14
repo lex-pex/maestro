@@ -132,10 +132,8 @@ class ItemsController extends AbstractController
         $item->setCategoryId($data['categoryId']);
         $item->setUserId($data['userId']);
         $item->setUpdatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
-        if(isset($data['image_del'])) {
+        if(isset($data['image_del']))
             ImageProcessor::imageDelete($item);
-            $item->setImage('');
-        }
         ImageProcessor::uploadImage($item, $this->imageStorage, $request);
         $doctrine = $this->getDoctrine();
         $repository = $doctrine->getRepository(Items::class);
@@ -156,8 +154,9 @@ class ItemsController extends AbstractController
     {
         $doctrine = $this->getDoctrine();
         $m = $doctrine->getManager();
-        $post = $m->find(Items::class, $id);
-        $m->remove($post);
+        $item = $m->find(Items::class, $id);
+        ImageProcessor::imageDelete($item);
+        $m->remove($item);
         $m->flush();
         return $this->redirect('/items');
     }

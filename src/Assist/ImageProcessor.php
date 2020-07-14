@@ -94,6 +94,7 @@ class ImageProcessor
                     unlink($_SERVER['DOCUMENT_ROOT'] . $path);
             }
         }
+        $item->setImage('');
     }
 
     /**

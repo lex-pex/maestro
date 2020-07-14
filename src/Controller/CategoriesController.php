@@ -6,11 +6,13 @@ use App\Assist\AliasProcessor;
 use App\Assist\ImageProcessor;
 use App\Assist\Redirect;
 use App\Entity\Categories;
+use App\Entity\Items;
 use App\Form\CategoryType;
 use App\Form\CategoryUpdateType;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CategoriesController extends AbstractController
@@ -108,10 +110,8 @@ class CategoriesController extends AbstractController
         $category->setName($data['name']);
         $category->setDescription($data['description']);
         $category->setUpdatedAt(new DateTimeImmutable(date('Y-m-d H:i:s')));
-        if(isset($data['image_del'])) {
+        if(isset($data['image_del']))
             ImageProcessor::imageDelete($category);
-            $category->setImage('');
-        }
         ImageProcessor::uploadImage($category, $this->imageStorage, $request);
         $doctrine = $this->getDoctrine();
         $repository = $doctrine->getRepository(Categories::class);
@@ -128,11 +128,17 @@ class CategoriesController extends AbstractController
      * @internal param Request $request
      * @Route("/categories/{id}", methods={"delete"}, name="categories.destroy")
      */
-    public function destroy($id)
+    public function destroy($id, Redirect $redirect)
     {
         $m = $this->getDoctrine()->getManager();
-        $post = $m->find(Categories::class, $id);
-        $m->remove($post);
+
+        $category = $m->find(Categories::class, $id);
+
+        if($m->getRepository(Items::class)->findOneBy(['categoryId' => $id]))
+//            return new Response('errors/error.html.twig', 302, ['message' => 'The category is not empty']);
+            return $redirect->abort(302, 'errors/error.html.twig', ['message' => 'The category is not empty']);
+        ImageProcessor::imageDelete($category);
+        $m->remove($category);
         $m->flush();
         return $this->redirect('/categories');
     }
