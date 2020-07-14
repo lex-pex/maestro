@@ -15,7 +15,7 @@ class ImageProcessor
     public static function uploadImage($item, $storage, $request)
     {
         $itemName = self::getItemName($item);
-        if(!$file = $request->files->get('item')['image'])
+        if(!$file = $request->files->get($itemName)['image'])
             $file = $request->files->get($itemName.'_update')['image'];
         if($file) {
             $fileName = $file->getClientOriginalName();
