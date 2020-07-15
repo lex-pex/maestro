@@ -19,6 +19,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class GuestController extends AbstractController
 {
     /**
+     * @var int amount of displayed items per page
+     */
+    private $limit = 6;
+
+    /**
      * Display a listing of the resource.
      * @param Request $request
      * @return Response
@@ -30,7 +35,7 @@ class GuestController extends AbstractController
         $repository = $doctrine->getRepository(Items::class);
         $p = $request->get('page');
         $page = ($p && is_numeric($p)) ? abs($p) : 1;
-        $limit = 6;
+        $limit = $this->limit;
         $offset = $limit * ($page - 1);
         $total = count($repository->findBy([], []));
         $items = $repository->findBy([], ['id'=>'desc'], $limit, $offset);
@@ -61,7 +66,7 @@ class GuestController extends AbstractController
         $repository = $doctrine->getRepository(Items::class);
         $p = $request->get('page');
         $page = ($p && is_numeric($p)) ? abs($p) : 1;
-        $limit = 6;
+        $limit = $this->limit;
         $offset = $limit * ($page - 1);
         $total = count($repository->findBy(['categoryId' => $category->getId()], []));
         $items = $repository->findBy(['categoryId' => $category->getId()], ['id'=>'desc'], $limit, $offset);
@@ -92,6 +97,40 @@ class GuestController extends AbstractController
             'categories' => Categories::getArray($doctrine),
             'category_id' => $item->getCategoryId(),
             'title' => $item->getTitle()
+        ]);
+    }
+
+    /**
+     * @Route("/items/search/{pattern}", methods={"GET"}, name="search")
+     * @param string $pattern - parameter for search
+     * @param Request $request
+     * @return Response
+     */
+    public function search($pattern, Request $request)
+    {
+        $doctrine = $this->getDoctrine();
+        $repository = $doctrine->getRepository(Items::class);
+        $p = $request->get('page');
+        $page = ($p && is_numeric($p)) ? abs($p) : 1;
+        $limit = $this->limit;
+        $offset = $limit * ($page - 1);
+        $query = $repository->createQueryBuilder('i')
+            ->where('i.title LIKE :pattern')
+            ->orWhere('i.text LIKE :pattern')
+            ->setParameter('pattern', '%'.$pattern.'%')
+            ->addOrderBy('i.id', 'DESC')
+            ->getQuery();
+        $total = count($query->getResult());
+        $query->setFirstResult($offset);
+        $query->setMaxResults($limit);
+        $items = $query->getResult();
+        return $this->render(
+            'guest/index.html.twig', [
+            'items' => $items,
+            'categories' => Categories::getArray($doctrine),
+            'category_id' => 0,
+            'pager' => Pager::widget($total, $limit, $page, '/items/search/' . $pattern . '/'),
+            'title' => 'Search Posts'
         ]);
     }
 }

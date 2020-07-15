@@ -124,18 +124,16 @@ class CategoriesController extends AbstractController
     /**
      * Destroy the resource by id
      * @param $id
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Redirect $redirect
+     * @return Response
      * @internal param Request $request
      * @Route("/categories/{id}", methods={"delete"}, name="categories.destroy")
      */
     public function destroy($id, Redirect $redirect)
     {
         $m = $this->getDoctrine()->getManager();
-
         $category = $m->find(Categories::class, $id);
-
         if($m->getRepository(Items::class)->findOneBy(['categoryId' => $id]))
-//            return new Response('errors/error.html.twig', 302, ['message' => 'The category is not empty']);
             return $redirect->abort(302, 'errors/error.html.twig', ['message' => 'The category is not empty']);
         ImageProcessor::imageDelete($category);
         $m->remove($category);
