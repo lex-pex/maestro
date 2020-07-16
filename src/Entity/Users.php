@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+
+//use Symfony\Component\Security\Core\User;
 
 /**
  * Users
@@ -31,7 +34,7 @@ class Users
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @ORM\Column(name="email", type="string", length=255, unique=true, nullable=false)
      */
     private $email;
 

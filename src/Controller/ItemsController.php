@@ -44,7 +44,7 @@ class ItemsController extends AbstractController
         $limit = 6;
         $offset = $limit * ($page - 1);
         $total = count($repository->findBy([], []));
-        $items = $repository->findBy([], ['id'=>'desc'], $limit, $offset);
+        $items = $repository->findBy([], ['status' => 'desc', 'id'=>'desc'], $limit, $offset);
         return $this->render(
             'items/index.html.twig', [
             'items' => $items,

@@ -19,6 +19,7 @@
         <td>
             <strong><a href="{{ path('items.show', {'alias': item.alias}) }}" id="item_name_{{item.id}}">{{item.title}}</a></strong>
             <br />{{item.getShortText}}
+            <br />status: {{item.status}}
         </td>
         <td>
             <a href="{{ path('items.edit', {id: item.id}) }} " class="btn btn-sm btn-outline-primary" style="padding:0 6px 0 6px">Edit</a>
