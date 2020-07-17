@@ -5,19 +5,19 @@
         <div class="col-md-2">
             <ul class="nav nav-pills btn-group-vertical">
                 <li class="nav-item btn-block">
-                    <a class="nav-item nav-link active" href="{{ path('dashboard') }}">Dashboard</a>
+                    <a class="nav-item nav-link {{ active == 'dashboard' ? 'active' : 'border' }}" href="{{ path('dashboard') }}">Dashboard</a>
                 </li>
                 <li class="nav-item btn-block">
-                    <a class="nav-item nav-link border" href="{{ path('items') }}">Items List</a>
+                    <a class="nav-item nav-link  {{ active == 'items' ? 'active' : 'border' }}" href="{{ path('items') }}">Items List</a>
                 </li>
                 <li class="nav-item btn-block">
-                    <a class="nav-item nav-link border" href="{{ path('items.create') }}">Add Item</a>
+                    <a class="nav-item nav-link  {{ active == 'items.create' ? 'active' : 'border' }}" href="{{ path('items.create') }}">Add Item</a>
                 </li>
                 <li class="nav-item btn-block">
-                    <a class="nav-item nav-link border" href="{{ path('categories') }}">Categories</a>
+                    <a class="nav-item nav-link  {{ active == 'categories' ? 'active' : 'border' }}" href="{{ path('categories') }}">Categories</a>
                 </li>
                 <li class="nav-item btn-block">
-                    <a class="nav-item nav-link border" href="{{ path('categories.create') }}">Add Category</a>
+                    <a class="nav-item nav-link  {{ active == 'categories.create' ? 'active' : 'border' }}" href="{{ path('categories.create') }}">Add Category</a>
                 </li>
             </ul>
         </div>

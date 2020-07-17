@@ -45,8 +45,8 @@ class ItemsController extends AbstractController
         $offset = $limit * ($page - 1);
         $total = count($repository->findBy([], []));
         $items = $repository->findBy([], ['status' => 'desc', 'id'=>'desc'], $limit, $offset);
-        return $this->render(
-            'items/index.html.twig', [
+        return $this->render('items/index.html.twig', [
+            'active' => 'items',
             'items' => $items,
             'pager' => Pager::widget($total, $limit, $page, '/items/'),
             'title' => 'Items List',
@@ -67,6 +67,7 @@ class ItemsController extends AbstractController
         $item->setCategoryId(14); // "Testing Staff" category
         $form = $this->createForm(ItemType::class, $item);
         return $this->render('items/create.html.twig', [
+            'active' => 'items.create',
             'form' => $form->createView(),
             'title' => 'Create Item'
         ]);

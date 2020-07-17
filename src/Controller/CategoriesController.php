@@ -32,6 +32,7 @@ class CategoriesController extends AbstractController
         $categories = $doctrine
             ->getRepository(Categories::class)->findBy([], ['id'=>'desc'], 6, 0);
         return $this->render('categories/index.html.twig', [
+            'active' => 'categories',
             'categories' => $categories,
             'title' => 'Categories List'
         ]);
@@ -48,6 +49,7 @@ class CategoriesController extends AbstractController
         $category = new Categories();
         $form = $this->createForm(CategoryType::class, $category);
         return $this->render('categories/create.html.twig', [
+            'active' => 'categories.create',
             'form' => $form->createView(),
             'title' => 'Create Category'
         ]);
